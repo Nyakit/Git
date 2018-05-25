@@ -12,9 +12,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var tableView: UITableView!
     
+    
+    
     var repo = [DataRepo]()
-    
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return repo.count
@@ -51,6 +51,29 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         tableView.delegate = self
         tableView.dataSource = self
+
+        self.tableView.addSubview(self.refreshControl)
+    }
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(ViewController.handleRefresh(_:)),
+                                 for: UIControlEvents.valueChanged)
+        refreshControl.tintColor = UIColor.red
+        refreshControl.attributedTitle = NSAttributedString(string: "Обновление")
+        return refreshControl
+    }()
+    
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        
+        downloadJSON {
+            print("Succesfiul")
+        }
+        
+        self.tableView.reloadData()
+        refreshControl.endRefreshing()
     }
 
     
@@ -68,7 +91,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         }.resume()
-        
+                
     }
 
 }

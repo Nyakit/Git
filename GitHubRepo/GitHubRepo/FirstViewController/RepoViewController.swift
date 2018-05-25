@@ -18,11 +18,13 @@ class RepoViewController: UIViewController {
         super.viewDidLoad()
         webLoad(url: myUrl!)
     }
-    
-    
     func webLoad (url: URL) {
         let myRequest = URLRequest(url: myUrl!)
         webView.load(myRequest)
+    }
+    @IBAction func onShareTapped () {
+        let activityController = UIActivityViewController(activityItems: [myUrl], applicationActivities: nil)
+        present(activityController, animated: true, completion: nil) 
     }
 
 
